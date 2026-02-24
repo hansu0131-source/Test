@@ -91,7 +91,9 @@
   .nick-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 12px rgba(240, 98, 146, 0.15); }
   .nick-btn.active { border-color: var(--dark-pink); box-shadow: 0 0 0 2px var(--dark-pink) inset; color: var(--dark-pink);}
   .nick-btn.status-todo { background: #ffebee; color: #d32f2f; border-color: #ffcdd2; }
-  .nick-btn.status-partial { background: #fff3e0; color: #f57c00; border-color: #ffe0b2; }
+  .nick-btn.status-bangsel, .nick-btn.status-partial { background: #fff3e0; color: #f57c00; border-color: #ffe0b2; }
+  .nick-btn.status-note { background: #fff8e1; color: #fbc02d; border-color: #ffecb3; }
+  .nick-btn.status-reversefan { background: #e1f5fe; color: #0288d1; border-color: #b3e5fc; }
   .nick-btn.status-done { background: #e8f5e9; color: #388e3c; border-color: #c8e6c9; }
 
   #add-form { display: none; background: #fff8fa; border: 3px dashed var(--primary-pink); padding: 25px; border-radius: var(--radius-round); margin-bottom: 30px; box-shadow: inset 0 0 15px rgba(255, 182, 193, 0.1); }
@@ -124,15 +126,18 @@
   .task-content { font-size: 1.1rem; line-height: 1.7; color: var(--text-dark); margin-bottom: 20px; word-break: keep-all; background: var(--light-pink-hover); padding: 18px; border-radius: 12px; }
 
   .status-control { margin-top: 25px; border-top: 3px dotted var(--border-pink); padding-top: 25px; }
-  .status-options { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; }
+  .status-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
   .status-radio { display: none; }
-  .status-label { padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 15px; font-weight: bold; color: #777; background: #eee; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
-  input[type="radio"]:checked + .status-label.lbl-todo { background: #ff8a80; color: white; box-shadow: 0 6px 15px rgba(255, 138, 128, 0.3); transform: translateY(-2px); }
-  input[type="radio"]:checked + .status-label.lbl-partial { background: #ffb74d; color: white; box-shadow: 0 6px 15px rgba(255, 183, 77, 0.3); transform: translateY(-2px); }
-  input[type="radio"]:checked + .status-label.lbl-done { background: #81c784; color: white; box-shadow: 0 6px 15px rgba(129, 199, 132, 0.3); transform: translateY(-2px); }
-  .memo-input { width: 100%; box-sizing: border-box; padding: 18px; border: 2px solid var(--border-pink); border-radius: var(--radius-soft); font-size: 15px; resize: vertical; min-height: 80px; margin-bottom: 15px; background: #fff; transition: border-color 0.2s; }
+  .status-label { padding: 8px 15px; border-radius: 25px; cursor: pointer; font-size: 14px; font-weight: bold; color: #777; background: #eee; transition: all 0.3s; display: flex; align-items: center; gap: 5px; }  
+  input[type="radio"]:checked + .status-label.lbl-todo { background: #ff8a80; color: white; box-shadow: 0 4px 10px rgba(255, 138, 128, 0.3); transform: translateY(-2px); }
+  input[type="radio"]:checked + .status-label.lbl-bangsel { background: #ffb74d; color: white; box-shadow: 0 4px 10px rgba(255, 183, 77, 0.3); transform: translateY(-2px); }
+  input[type="radio"]:checked + .status-label.lbl-note { background: #ffd54f; color: white; box-shadow: 0 4px 10px rgba(255, 213, 79, 0.3); transform: translateY(-2px); text-shadow: 0 0 1px rgba(0,0,0,0.2); }
+  input[type="radio"]:checked + .status-label.lbl-reversefan { background: #4fc3f7; color: white; box-shadow: 0 4px 10px rgba(79, 195, 247, 0.3); transform: translateY(-2px); }
+  input[type="radio"]:checked + .status-label.lbl-done { background: #81c784; color: white; box-shadow: 0 4px 10px rgba(129, 199, 132, 0.3); transform: translateY(-2px); }  .memo-input { width: 100%; box-sizing: border-box; padding: 18px; border: 2px solid var(--border-pink); border-radius: var(--radius-soft); font-size: 15px; resize: vertical; min-height: 80px; margin-bottom: 15px; background: #fff; transition: border-color 0.2s; }
   .memo-input:focus { border-color: var(--dark-pink); }
-  
+
+  .btn-note { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; box-sizing: border-box; background-color: #ffd54f; color: #fff; border: none; padding: 16px; border-radius: var(--radius-soft); text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 6px 15px rgba(255, 213, 79, 0.3); margin-bottom: 10px; transition: all 0.2s; text-shadow: 0 0 2px rgba(0,0,0,0.1); }
+  .btn-note:hover { background-color: #ffca28; transform: translateY(-3px); }
   .btn-soop { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; box-sizing: border-box; background-color: var(--accent-blue); color: white; border: none; padding: 16px; border-radius: var(--radius-soft); text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 6px 15px rgba(174, 217, 224, 0.3); margin-bottom: 15px; transition: all 0.2s; }
   .btn-soop:hover { background-color: #9ad0d8; transform: translateY(-3px); }
   .soop-icon { width: 22px; height: 22px; fill: white; }
@@ -175,13 +180,13 @@
   }
   .modal-close-btn:hover { background: #eee; color: #333; }
   
-  /* 🔥 [수정] 기록 리스트 아이템에 클릭 스타일 추가 */
+  /* 기록 리스트 아이템 */
   .history-item { 
     padding: 12px; border-bottom: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 5px; 
-    cursor: pointer; transition: all 0.2s; /* 클릭 유도 */
+    cursor: pointer; transition: all 0.2s; 
   }
   .history-item:hover { 
-    background-color: #fff5f8; transform: translateX(5px); /* 호버 효과 */
+    background-color: #fff5f8; transform: translateX(5px); 
   }
   .history-item:last-child { border-bottom: none; }
   
@@ -194,7 +199,7 @@
   /* ==========================================================================
      [페이지 2] 낭플단 기록실
      ========================================================================== */
-  .season-layout { max-width: 1650px; margin: 0 auto; background: var(--container-bg); border-radius: var(--radius-round); padding: 35px; box-shadow: var(--shadow-soft); border: 3px solid #fff; }
+  .season-layout { max-width: 1200px; margin: 0 auto; background: var(--container-bg); border-radius: var(--radius-round); padding: 35px; box-shadow: var(--shadow-soft); border: 3px solid #fff; }
   
   .record-header-area { text-align: center; margin-bottom: 30px; }
   .record-header-area h2 { margin: 0 0 15px 0; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--deep-pink-text); }
@@ -224,9 +229,9 @@
   .header-row .record-cell { font-weight: 800; color: #880e4f; border: none; font-size: 16px; }
 
   .record-row {
-    display: flex; background: white;
+    display: flex; background: var(--strawberry-milk-bg);
     border-bottom: 1px solid #eee; 
-    padding: 4px 0; 
+    padding: 2px 0; 
     transition: all 0.2s ease; align-items: center;
   }
   .record-row.data-row:hover { transform: scale(1.002); z-index: 5; box-shadow: 0 4px 12px rgba(0,0,0,0.05); } 
@@ -238,7 +243,7 @@
 
   .record-cell {
     padding: 4px 4px;
-    font-size: 14px; text-align: center;
+    font-size: 17px; text-align: center;
     border-right: 1px solid rgba(0,0,0,0.05); outline: none; 
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     display: flex; justify-content: center; align-items: center; 
@@ -248,14 +253,14 @@
   .record-cell:last-child { border-right: none; }
   .record-cell[contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--dark-pink); border-radius: 4px; }
 
-  /* 강조 제거 (기본 스타일) */
+  /* 🔥 [수정] 통합된 '기여도' 열 너비 조정 */
   .col-id { width: 10%; }
-  .col-nick { width: 12%; font-weight: 600; }
-  .col-amt { width: 10%; }
-  .col-one { width: 10%; }
-  .col-promise { width: 35%; text-align: center; justify-content: center; } 
-  .col-reverse { width: 10%; }
-  .col-note { width: 8%; color: #999; font-size: 13px; }
+  .col-nick { width: 11%; font-weight: 600; }
+  .col-amt { width: 10%; font-weight: 600; color: #d81b60;} /* 통합된 기여도 (너비 확장) */
+  /* .col-one 삭제됨 */
+  .col-promise { width: 50%; text-align: center; justify-content: center; } 
+  .col-reverse { width: 8%; } 
+  .col-note { width: 6%; color: #999; font-size: 13px; }
   .col-action { width: 5%; }
 
   .action-buttons { display: none; gap: 4px; }
@@ -331,6 +336,7 @@
           </div>
           <div style="margin-bottom:15px; display:flex; gap:15px; align-items:center;">
              <label style="cursor:pointer; font-weight:bold; color:var(--text-gray);"><input type="radio" name="calc-ratio" value="0.03" checked onchange="autoCalculate()"> 3%</label>
+             <label style="cursor:pointer; font-weight:bold; color:var(--text-gray);"><input type="radio" name="calc-ratio" value="0.05" onchange="autoCalculate()"> 5%</label>
              <label style="cursor:pointer; font-weight:bold; color:var(--text-gray);"><input type="radio" name="calc-ratio" value="0.10" onchange="autoCalculate()"> 10%</label>
           </div>
           <input type="text" id="new-content" class="form-input" placeholder="숙제 내용 (직접 입력)" style="margin-bottom:15px;">
@@ -365,17 +371,30 @@
           <span class="task-label">📝 숙제 내용</span>
           <div class="task-content" id="detail-content">내용</div>
           <div class="status-control">
-            <div class="status-options">
+          <div class="status-options">
               <input type="radio" name="status" id="st-todo" value="todo" onchange="saveTaskStatus(false)">
               <label for="st-todo" class="status-label lbl-todo">🔴 대기</label>
-              <input type="radio" name="status" id="st-partial" value="partial" onchange="saveTaskStatus(false)">
-              <label for="st-partial" class="status-label lbl-partial">🟠 방셀만</label>
+
+              <input type="radio" name="status" id="st-bangsel" value="bangsel" onchange="saveTaskStatus(false)">
+              <label for="st-bangsel" class="status-label lbl-bangsel">🟠 방셀</label>
+
+              <input type="radio" name="status" id="st-note" value="note" onchange="saveTaskStatus(false)">
+              <label for="st-note" class="status-label lbl-note">🟡 쪽지</label>
+
+              <input type="radio" name="status" id="st-reversefan" value="reversefan" onchange="saveTaskStatus(false)">
+              <label for="st-reversefan" class="status-label lbl-reversefan">🔵 역팬</label>
+
               <input type="radio" name="status" id="st-done" value="done" onchange="saveTaskStatus(false)">
               <label for="st-done" class="status-label lbl-done">🟢 완료</label>
             </div>
             <textarea id="detail-memo" class="memo-input" placeholder="메모를 입력하세요 (입력 후 밖을 클릭하면 자동 저장)" onblur="saveTaskStatus(false)"></textarea>
           </div>
         </div>
+
+        <a href="#" target="_blank" class="btn-note" id="detail-note-link">
+          💌 쪽지 보내기
+        </a>
+
         <a href="#" target="_blank" class="btn-soop" id="detail-link">
           <svg class="soop-icon" viewBox="0 0 24 24"><path d="M21 3H3C1.89543 3 1 3.89543 1 5V17C1 18.1046 1.89543 19 3 19H8V21H16V19H21C22.1046 19 23 18.1046 23 17V5C23 3.89543 22.1046 3 21 3ZM21 17H3V5H21V17Z" /></svg>
           SOOP 방송국 바로가기
@@ -416,8 +435,7 @@
           <div class="record-row header-row">
             <div class="record-cell col-id">아이디</div>
             <div class="record-cell col-nick">닉네임</div>
-            <div class="record-cell col-amt">낭플</div>
-            <div class="record-cell col-one">원플원</div>
+            <div class="record-cell col-amt">기여도</div>
             <div class="record-cell col-promise">공약</div>
             <div class="record-cell col-reverse">역팬</div>
             <div class="record-cell col-note">비고</div>
@@ -430,8 +448,7 @@
             <div class="record-cell col-id">합계</div>
             <div class="record-cell col-nick" id="sum-count" style="color:var(--deep-pink-text);">0명</div>
             <div class="record-cell col-amt" id="sum-nang" style="font-weight:900; color:var(--deep-pink-text);">0</div>
-            <div class="record-cell col-one" id="sum-one" style="font-weight:900; color:var(--deep-pink-text);">0</div>
-            <div class="record-cell col-promise" id="sum-total" style="font-weight:900; color:var(--deep-pink-text); justify-content: center; padding-left:0; font-size:16px;">0</div>
+            <div class="record-cell col-promise"></div>
             <div class="record-cell col-reverse" id="sum-reverse" style="font-weight:900; color:var(--deep-pink-text);">0</div>
             <div class="record-cell col-note"></div>
             <div class="record-cell col-action"></div>
@@ -571,17 +588,15 @@
     container.innerHTML = '';
     
     const list = window.seasonData[seasonName] || [];
-    let count = 0, totalNang = 0, totalOne = 0, totalReverse = 0;
+    let count = 0, totalNang = 0, totalReverse = 0;
 
     list.forEach((item, index) => {
         if(item.id || item.nick) count++;
 
-        const amt = parseInt(item.amount || 0);
-        const one = parseInt(item.oneplus || 0);
+        const amt = parseInt(item.amount || 0); // 이제 이게 '기여도'
         const rev = parseInt(item.reverse || 0);
         
         totalNang += amt;
-        totalOne += one;
         totalReverse += rev;
         
         // 🔥 [복구] 배경색 적용
@@ -594,7 +609,6 @@
             <div class="record-cell col-id" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'id', this)" onblur="handleBlur()">${item.id || ''}</div>
             <div class="record-cell col-nick" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'nick', this)" onblur="handleBlur()">${item.nick || ''}</div>
             <div class="record-cell col-amt amount-cell" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'amount', this)" onblur="handleBlur()">${item.amount || ''}</div>
-            <div class="record-cell col-one oneplus-cell" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'oneplus', this)" onblur="handleBlur()">${item.oneplus || ''}</div>
             <div class="record-cell col-promise" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'promise', this)" onblur="handleBlur()">${item.promise || ''}</div>
             <div class="record-cell col-reverse reverse-cell" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'reverse', this)" onblur="handleBlur()">${item.reverse || ''}</div>
             <div class="record-cell col-note" contenteditable="true" oninput="handleInput('${seasonName}', ${index}, 'note', this)" onblur="handleBlur()">${item.note || ''}</div>
@@ -608,14 +622,12 @@
         container.appendChild(row);
     });
 
-    updateSumDisplay(count, totalNang, totalOne, totalReverse);
+    updateSumDisplay(count, totalNang, totalReverse);
   };
 
-  function updateSumDisplay(cnt, nang, one, rev) {
+  function updateSumDisplay(cnt, nang, rev) {
       document.getElementById('sum-count').innerText = `${cnt}명`;
       document.getElementById('sum-nang').innerText = nang.toLocaleString();
-      document.getElementById('sum-one').innerText = one.toLocaleString();
-      document.getElementById('sum-total').innerText = (nang + one).toLocaleString();
       document.getElementById('sum-reverse').innerText = rev.toLocaleString();
   }
 
@@ -629,7 +641,7 @@
 
   window.handleInput = (seasonName, index, field, element) => {
     let val = element.innerText.trim();
-    if(field === 'amount' || field === 'oneplus' || field === 'reverse') val = val.replace(/[^0-9]/g, ''); 
+    if(field === 'amount' || field === 'reverse') val = val.replace(/[^0-9]/g, ''); 
     
     if(!window.seasonData[seasonName][index]) return;
     window.seasonData[seasonName][index][field] = val;
@@ -640,7 +652,7 @@
         row.style.background = getLevelColor(val);
     }
     
-    if(['amount','oneplus','reverse','id','nick'].includes(field)) {
+    if(['amount','reverse','id','nick'].includes(field)) {
         recalculateSums(seasonName);
     }
   };
@@ -648,19 +660,18 @@
   window.handleBlur = () => { window.saveSeason(); };
 
   function recalculateSums(seasonName) {
-      let cnt = 0, nang = 0, one = 0, rev = 0;
+      let cnt = 0, nang = 0, rev = 0;
       window.seasonData[seasonName].forEach(item => {
           if(item.id || item.nick) cnt++;
           nang += parseInt(item.amount || 0);
-          one += parseInt(item.oneplus || 0);
           rev += parseInt(item.reverse || 0);
       });
-      updateSumDisplay(cnt, nang, one, rev);
+      updateSumDisplay(cnt, nang, rev);
   }
 
   window.cloneRow = (index) => {
     if(!window.currentSeasonName) return;
-    const newItem = { id:'', nick:'', amount:'', oneplus:'', promise:'', reverse:'', note:'' };
+    const newItem = { id:'', nick:'', amount:'', promise:'', reverse:'', note:'' };
     window.seasonData[window.currentSeasonName].splice(index + 1, 0, newItem);
     window.saveSeason();
     renderRecordTable(window.currentSeasonName);
@@ -668,7 +679,7 @@
 
   window.addEmptyRowAtEnd = () => {
     if(!window.currentSeasonName) return;
-    const newItem = { id:'', nick:'', amount:'', oneplus:'', promise:'', reverse:'', note:'' };
+    const newItem = { id:'', nick:'', amount:'', promise:'', reverse:'', note:'' };
     window.seasonData[window.currentSeasonName].push(newItem);
     window.saveSeason();
     renderRecordTable(window.currentSeasonName);
@@ -691,6 +702,7 @@
     window.saveSeason();
   };
 
+  // 🔥 [수정] 엑셀 붙여넣기 (열 감소 반영)
   document.addEventListener('paste', (e) => {
     if(!document.getElementById('page-record').classList.contains('active')) return;
     if(!window.currentSeasonName) return;
@@ -712,10 +724,10 @@
             id: cols[0] || '',
             nick: cols[1] || '',
             amount: (cols[2] || '').replace(/[^0-9]/g, ''), 
-            oneplus: (cols[3] || '').replace(/[^0-9]/g, ''),
-            promise: cols[4] || '',
-            reverse: (cols[5] || '').replace(/[^0-9]/g, ''),
-            note: cols[6] || ''
+            // cols[3] was oneplus, now mapped to promise
+            promise: cols[3] || '',
+            reverse: (cols[4] || '').replace(/[^0-9]/g, ''),
+            note: cols[5] || ''
         };
         window.seasonData[window.currentSeasonName].push(newItem);
     });
@@ -772,18 +784,20 @@
     document.getElementById('add-form').style.display='none';
   };
 
-  window.renderNickList = (list) => {
+window.renderNickList = (list) => {
     const con = document.getElementById('nick-list-container'); con.innerHTML = '';
     if(!list.length) { con.innerHTML = '<div style="grid-column:span 3; text-align:center; color:#ccc;">없음</div>'; return; }
     list.forEach((task, idx) => {
         const btn = document.createElement('button');
-        btn.className = `nick-btn status-${task.status || 'todo'}`;
+        // 예전 'partial' 데이터를 'bangsel' 색상으로 호환되게 처리
+        let st = task.status || 'todo';
+        if(st === 'partial') st = 'bangsel';
+        btn.className = `nick-btn status-${st}`;
         btn.innerText = task.nick;
         btn.onclick = () => showMemberDetail(task, idx);
         con.appendChild(btn);
     });
   };
-
   window.renderSidebar = () => {
     const con = document.getElementById('sidebar-list'); con.innerHTML = '';
     Object.keys(window.homeworkData).sort().reverse().forEach(key => {
@@ -931,6 +945,7 @@
     document.getElementById('new-content').value = task.content;
     const ratio = (task.amount > 0) ? (task.reverse / task.amount) : 0.03;
     if(ratio >= 0.09) document.querySelector('input[name="calc-ratio"][value="0.10"]').checked = true;
+    else if(ratio >= 0.04) document.querySelector('input[name="calc-ratio"][value="0.05"]').checked = true; // 5% 조건 추가
     else document.querySelector('input[name="calc-ratio"][value="0.03"]').checked = true;
     const btn = document.getElementById('btn-submit');
     btn.innerText = "수정 완료 🔄";
@@ -990,8 +1005,13 @@
     document.getElementById('detail-content').innerText = task.content;
     document.getElementById('detail-memo').value = task.memo || '';
     const radios = document.getElementsByName('status');
-    for(let r of radios) { r.checked = (r.value === task.status); }
+    let currentStatus = task.status || 'todo';
+    if(currentStatus === 'partial') currentStatus = 'bangsel'; // 예전 데이터 호환
+    for(let r of radios) { r.checked = (r.value === currentStatus); }
+    // 방송국 URL 세팅
     document.getElementById('detail-link').href = `https://www.sooplive.co.kr/station/${task.id}`;
+    // 쪽지 보내기 URL 세팅
+    document.getElementById('detail-note-link').href = `https://m.sooplive.co.kr/#/note/write2/${task.id}`;
   };
 
   window.saveTaskStatus = (showMsg=false) => {
