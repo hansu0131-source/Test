@@ -1,1 +1,9 @@
-1
+{
+  "name": "overlay-backend",
+  "version": "1.0.0",
+  "description": "오버레이 테스트용 중계 서버",
+  "main": "server.js",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
