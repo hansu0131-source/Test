@@ -1,1 +1,29 @@
-12
+body {
+    margin: 0;
+    overflow: hidden; /* 스크롤바 숨김 처리 */
+    background-color: transparent; /* OBS 적용 시 배경을 투명하게 */
+    font-family: 'Malgun Gothic', sans-serif;
+}
+
+#overlay-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* 동적으로 생성될 알림 박스 디자인 */
+.alert-box {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 20px 40px;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: 2px solid #ffcc00; /* 포인트 컬러 */
+}
