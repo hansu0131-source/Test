@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>낭니 시그 리스트</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#FFF7F8;
+  font-family:'Pretendard', sans-serif;
+  color:#444;
+  padding:20px;
+}
+
+/* 전체 박스 */
+.container{
+  width:100%;
+  max-width:520px;
+  margin:auto;
+  padding:24px;
+  background:white;
+  border-radius:28px;
+  box-shadow:
+    0 10px 30px rgba(255,192,203,0.18);
+}
+
+/* 상단 이미지 */
+.top-img{
+  width:220px;
+  display:block;
+  margin:10px auto 24px;
+}
+
+/* 검색창 */
+input[type="text"]{
+  width:100%;
+  padding:14px 18px;
+  border:none;
+  border-radius:999px;
+  background:#FFF0F3;
+  font-size:15px;
+  outline:none;
+  transition:0.2s;
+  margin-bottom:22px;
+}
+
+input[type="text"]:focus{
+  background:#ffe7ee;
+}
+
+/* 테이블 */
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 10px;
+}
+
+thead th{
+  background:none;
+  color:#ff7fa2;
+  font-size:14px;
+  padding:0 10px 6px;
+  text-align:left;
+  border:none;
+  user-select:none;
+  cursor:pointer;
+}
+
+/* 카드형 리스트 */
+tbody tr{
+  background:#FFF8FA;
+  transition:0.15s;
+  animation:fadeUp 0.25s ease;
+}
+
+tbody tr:hover{
+  transform:translateY(-2px);
+  background:#FFEFF4;
+}
+
+td{
+  padding:16px 14px;
+  border:none;
+}
+
+td:first-child{
+  width:90px;
+  text-align:center;
+  font-weight:700;
+  color:#ff6b93;
+  border-radius:16px 0 0 16px;
+}
+
+td:last-child{
+  border-radius:0 16px 16px 0;
+}
+
+.sig-name{
+  font-weight:600;
+  font-size:15px;
+}
+
+/* NEW 배지 */
+.new-badge{
+  display:inline-block;
+  margin-left:8px;
+  background:#ff7a9e;
+  color:white;
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:999px;
+  vertical-align:middle;
+}
+
+/* Re 배지 */
+.re-badge{
+  display:inline-block;
+  margin-left:8px;
+  background:#8bd8a5;
+  color:white;
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:999px;
+  vertical-align:middle;
+}
+
+/* 검색결과 없음 */
+.empty{
+  padding:30px;
+  text-align:center;
+  color:#999;
+  background:#FFF8FA;
+  border-radius:18px;
+}
+
+/* 애니메이션 */
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <img src="IMG_5183.jpeg" alt="배너 이미지" class="top-img">
+
+  <input
+    id="search"
+    type="text"
+    placeholder="🐰 시그 검색..."
+  >
+
+  <table id="sigTable">
+
+    <thead>
+      <tr>
+        <th id="thNo">번호 ▲</th>
+        <th>시그 이름</th>
+      </tr>
+    </thead>
+
+    <tbody id="tbody"></tbody>
+
+  </table>
+
+</div>
+
+<!-- JSON 데이터 -->
+<script type="application/json" id="data">
+[
+  {"no":117,"name":"두번째지구"},
+  {"no":118,"name":"치킨바나나"},
+  {"no":121,"name":"테·스"},
+  {"no":122,"name":"첫눈"},
+  {"no":123,"name":"내얘길들어봐"},
+  {"no":124,"name":"왜요왜요"},
+  {"no":126,"name":"카리나닮았대"},
+  {"no":128,"name":"버블"},
+  {"no":129,"name":"candy theif"},
+  {"no":132,"name":"쓸애기"},
+  {"no":133,"name":"마그네틱"},
+  {"no":134,"name":"body"},
+  {"no":135,"name":"무아"},
+  {"no":139,"name":"쌔끈빠끈"},
+  {"no":141,"name":"빛을따라서"},
+  {"no":145,"name":"힙합보단사랑"},
+  {"no":149,"name":"오버드라이브"},
+  {"no":150,"name":"바빠"},
+  {"no":151,"name":"캉거루"},
+  {"no":152,"name":"외모체크"},
+  {"no":153,"name":"러브쉐이크"},
+  {"no":154,"name":"샤넬챌린지"},
+  {"no":156,"name":"캐치캐치"},
+  {"no":157,"name":"키딩"},
+  {"no":158,"name":"찔려"},
+  {"no":165,"name":"It's Sexy"},
+  {"no":166,"name":"모시모시"},
+  {"no":167,"name":"여름이었다"},
+  {"no":175,"name":"트월킹덕"},
+  {"no":183,"name":"씨봐레츠코"},
+  {"no":184,"name":"야메떼"},
+  {"no":185,"name":"킹받쥬"},
+  {"no":188,"name":"피리송"},
+  {"no":189,"name":"롤러코스터"},
+  {"no":191,"name":"간바레센빠이"},
+  {"no":197,"name":"런웨이"},
+  {"no":200,"name":"팬서비스"},
+  {"no":201,"name":"젤리젤리"},
+  {"no":203,"name":"I want you"},
+  {"no":205,"name":"붐샤카라카"},
+  {"no":206,"name":"하얀그리움"},
+  {"no":207,"name":"듣고있니"},
+  {"no":219,"name":"몸"},
+  {"no":220,"name":"bass down low"},
+  {"no":222,"name":"뱅뱅뱅"},
+  {"no":226,"name":"스트로베리러쉬"},
+  {"no":228,"name":"오늘만 ILOVEYOU"},
+  {"no":229,"name":"빠이어"},
+  {"no":233,"name":"왠지"},
+  {"no":234,"name":"섹시푸드"},
+  {"no":237,"name":"고민중독"},
+  {"no":242,"name":"우유"},
+  {"no":244,"name":"여우"},
+  {"no":248,"name":"나랑사귈래"},
+  {"no":252,"name":"라라리라라"},
+  {"no":255,"name":"사랑받을준비완료"},
+  {"no":258,"name":"오빠바이러스"},
+  {"no":264,"name":"아헤가오"},
+  {"no":280,"name":"미미미"},
+  {"no":287,"name":"핑크레이디"},
+  {"no":300,"name":"한마디"},
+  {"no":306,"name":"자기야 화풀어"},
+  {"no":307,"name":"레츠고"},
+  {"no":322,"name":"이쁜여자"},
+  {"no":324,"name":"너와의모든지금"},
+  {"no":332,"name":"원더랜드"},
+  {"no":333,"name":"바니바니"},
+  {"no":335,"name":"앙카"},
+  {"no":336,"name":"엉큰녀"},
+  {"no":345,"name":"LSD"},
+  {"no":352,"name":"바우치"},
+  {"no":353,"name":"부티바운스"},
+  {"no":386,"name":"눈물참기"},
+  {"no":387,"name":"누나가알려줄게"},
+  {"no":388,"name":"헨타이"},
+  {"no":389,"name":"EDM"},
+  {"no":404,"name":"텐션업"},
+  {"no":424,"name":"바닥드라군"},
+  {"no":444,"name":"제로투"},
+  {"no":488,"name":"칭칭언니"},
+  {"no":505,"name":"호영레이블"},
+  {"no":506,"name":"Beggin"},
+  {"no":509,"name":"작은허당박"},
+  {"no":527,"name":"슈퍼킥드베"},
+  {"no":544,"name":"NaNaNa"},
+  {"no":555,"name":"Fast Cars"},
+  {"no":573,"name":"이쁜이"},
+  {"no":588,"name":"오빠하앙"},
+  {"no":590,"name":"슈퍼오빠달려붕붕"},
+  {"no":591,"name":"계엄령"},
+  {"no":646,"name":"작은 #woorinangni"},
+  {"no":709,"name":"작은잘해"},
+  {"no":816,"name":"작은 BBinnss"},
+  {"no":1002,"name":"봉다리#"},
+  {"no":1015,"name":"Tyler_"},
+  {"no":1018,"name":"꿀밤족구"},
+  {"no":1025,"name":"하츄"},
+  {"no":1026,"name":"안드루"},
+  {"no":1028,"name":"시래"},
+  {"no":1030,"name":"Atmosphere"},
+  {"no":1031,"name":"꼰돔"},
+  {"no":1032,"name":"엄써"},
+  {"no":1034,"name":"참숫"},
+  {"no":1038,"name":"만개화"},
+  {"no":1040,"name":"PODE"},
+  {"no":1042,"name":"더덕이"},
+  {"no":1045,"name":"참치마요"},
+  {"no":1046,"name":"잘해"},
+  {"no":1050,"name":"창귀"},
+  {"no":1051,"name":"꼬라지하고는"},
+  {"no":1052,"name":"도링"},
+  {"no":1057,"name":"REX"},
+  {"no":1059,"name":"허당박"},
+  {"no":1062,"name":"큐브"},
+  {"no":1063,"name":"5수생"},
+  {"no":1070,"name":"초월"},
+  {"no":1075,"name":"겨울"},
+  {"no":1079,"name":"터미널"},
+  {"no":1082,"name":"편지"},
+  {"no":1085,"name":"김배터"},
+  {"no":1099,"name":"개굴개굴"},
+  {"no":1111,"name":"Me낼름"},
+  {"no":1139,"name":"호랑수월가"},
+  {"no":1174,"name":"벨라74"},
+  {"no":1192,"name":"뚜이"},
+  {"no":1199,"name":"강태풍!!!"},
+  {"no":1209,"name":"공주팀 어셈블"},
+  {"no":1222,"name":"마티니"},
+  {"no":1226,"name":"BBinnss"},
+  {"no":1244,"name":"낭니신호탄"},
+  {"no":1258,"name":"허군"},
+  {"no":1262,"name":"안드루"},
+  {"no":1284,"name":"#woorinangni"},
+  {"no":1288,"name":"낭밍플"},
+  {"no":1333,"name":"낭국지"},
+  {"no":1372,"name":"[C9]잘해"},
+  {"no":1444,"name":"SNS"},
+  {"no":1542,"name":"어둠의낭플단"},
+  {"no":1565,"name":"낭로우로우로"},
+  {"no":1640,"name":"슈퍼아헤가오"},
+  {"no":2046,"name":"큰잘해"},
+  {"no":2080,"name":"빅허군"},
+  {"no":2626,"name":"큰안드루"},
+  {"no":2824,"name":"큰#woorinangni"},
+
+  {"no":142,"name":"하나뿐인낭니"},
+  {"no":1442,"name":"천사낭니"},
+  {"no":2842,"name":"이뻐낭니"},
+  {"no":5742,"name":"오직낭니"},
+  {"no":12442,"name":"많이사랑해낭니"},
+  {"no":28242,"name":"이쁜이낭니"},
+
+  {"no":1000,"name":"Heart"},
+  {"no":2000,"name":"Y"},
+  {"no":3000,"name":"낭니응원가"},
+  {"no":5000,"name":"GODDOG"},
+  {"no":10000,"name":"VIP"},
+  {"no":20000,"name":"VVIP"},
+  {"no":30000,"name":"VVVIP"}
+]
+</script>
+
+<script>
+
+/* 요소 가져오기 */
+const input = document.getElementById("search");
+const tbody = document.getElementById("tbody");
+const thNo = document.getElementById("thNo");
+
+/* JSON 데이터 불러오기 */
+const SIGS = JSON.parse(
+  document.getElementById("data").textContent
+);
+
+/* 상태 */
+let ascending = true;
+let current = [...SIGS];
+
+/* HTML 문자 보호 */
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+/* 정렬 */
+function sortInPlace(arr){
+  arr.sort((a,b)=>
+    ascending
+      ? (a.no - b.no)
+      : (b.no - a.no)
+  );
+}
+
+/* 렌더링 */
+function render(rows){
+
+  if(!rows.length){
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="2" class="empty">
+          검색 결과 없음 🥺
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tbody.innerHTML = rows.map((item)=>{
+
+    const no = item.no;
+    const name = item.name;
+
+    const isNew = item.NEW === true;
+    const isRe = item.Re === true;
+
+    return `
+      <tr>
+
+        <td>${no}</td>
+
+        <td class="sig-name">
+
+          ${escapeHtml(name)}
+
+          ${isNew
+            ? '<span class="new-badge">NEW</span>'
+            : ''
+          }
+
+          ${isRe
+            ? '<span class="re-badge">✓ Re</span>'
+            : ''
+          }
+
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+}
+
+/* 검색 */
+function applySearch(){
+
+  const q = input.value
+    .toLowerCase()
+    .trim();
+
+  current = SIGS.filter(({no,name})=>
+
+    String(no).includes(q) ||
+
+    String(name)
+      .toLowerCase()
+      .includes(q)
+
+  );
+
+  sortInPlace(current);
+
+  render(current);
+}
+
+/* 정렬 토글 */
+function toggleSort(){
+
+  ascending = !ascending;
+
+  thNo.textContent =
+    ascending
+      ? "번호 ▲"
+      : "번호 ▼";
+
+  sortInPlace(current);
+
+  render(current);
+}
+
+/* 이벤트 */
+input.addEventListener(
+  "keyup",
+  applySearch
+);
+
+thNo.addEventListener(
+  "click",
+  toggleSort
+);
+
+/* 초기 실행 */
+sortInPlace(current);
+render(current);
+
+</script>
+
+</body>
+</html>
