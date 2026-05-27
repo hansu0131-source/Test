@@ -173,7 +173,7 @@
   .rank-id { font-size: 12px; color: var(--primary-pink); }
   .rank-badge { background: var(--accent-blue); color: white; font-weight: bold; border-radius: 15px; padding: 6px 12px; font-size: 13px; box-shadow: 0 3px 8px rgba(174, 217, 224, 0.3); }
 
-  /* 숙제 기록 팝업 (모달) */
+  /* 모달 오버레이 공통 */
   .modal-overlay { 
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center; 
@@ -267,7 +267,7 @@
   .record-cell:last-child { border-right: none; }
   .record-cell[contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--dark-pink); border-radius: 4px; }
 
-  /* 기여도 통합 및 기본 스타일 유지 */
+  /* 강조 제거 (기본 스타일) */
   .col-id { width: 10%; }
   .col-nick { width: 11%; font-weight: 600; }
   .col-amt { width: 16%; font-weight: 600; color: #d81b60; } 
@@ -306,6 +306,17 @@
       <button class="modal-close-btn" onclick="closeHistoryModal()">X</button>
     </div>
     <div id="history-list">
+      </div>
+  </div>
+</div>
+
+<div id="summary-modal" class="modal-overlay" onclick="closeSummaryModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" style="font-size:1.2rem; font-weight:800; color:var(--dark-pink);">동일 아이디 역팬 합산</div>
+      <button class="modal-close-btn" onclick="closeSummaryModal()">X</button>
+    </div>
+    <div id="summary-list">
       </div>
   </div>
 </div>
@@ -439,6 +450,7 @@
     <div id="season-content-area" style="display:none;">
       <div class="controls-row">
         <button class="nav-tab" style="font-size:13px; padding:8px 15px;" onclick="createNewSeason()">+ 새 시즌 추가</button>
+        <button class="nav-tab" style="font-size:13px; padding:8px 15px; background:var(--light-pink-hover); color:var(--dark-pink);" onclick="openSummaryModal()">📊 역팬 합산 보기</button>
         <span class="paste-guide">💡 엑셀 복사(Ctrl+C) → 붙여넣기(Ctrl+V)</span>
         <button class="btn-del-season" onclick="deleteCurrentSeason()">이 시즌 삭제</button>
       </div>
@@ -525,6 +537,7 @@
     }
   });
 
+  // Safety Timeout
   setTimeout(() => {
       const overlay = document.getElementById('loading-overlay');
       if(overlay && overlay.style.display !== 'none') {
@@ -888,6 +901,7 @@
               listContainer.appendChild(div);
           });
       }
+
       modal.style.display = 'flex';
   };
 
@@ -910,156 +924,63 @@
       document.getElementById('history-modal').style.display = 'none';
   };
 
+  // 🔥 [신규] 기록실 동일 아이디 역팬 합산 창 열기
+  window.openSummaryModal = () => {
+      if(!window.currentSeasonName) {
+          alert("먼저 시즌을 선택하거나 추가해주세요!");
+          return;
+      }
+      
+      const list = window.seasonData[window.currentSeasonName] || [];
+      const summary = {};
+      
+      // 아이디 기준으로 역팬 합산
+      list.forEach(item => {
+          const id = item.id ? item.id.trim() : '';
+          if(!id) return; // 아이디가 없으면 스킵
+          
+          const rev = parseInt(item.reverse || 0);
+          if(!summary[id]) {
+              summary[id] = { nick: item.nick, sum: 0 };
+          }
+          summary[id].sum += rev;
+      });
+
+      // 역팬 합산값이 큰 순서대로 정렬
+      const sorted = Object.entries(summary).sort((a, b) => b[1].sum - a[1].sum);
+      
+      const container = document.getElementById('summary-list');
+      container.innerHTML = '';
+      
+      if(sorted.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">데이터가 없습니다.</div>';
+      } else {
+          sorted.forEach(([id, data], idx) => {
+              const div = document.createElement('div');
+              div.className = 'history-item';
+              div.style.flexDirection = 'row';
+              div.style.justifyContent = 'space-between';
+              div.style.alignItems = 'center';
+              div.style.cursor = 'default'; // 클릭 효과 제거
+              div.innerHTML = `
+                  <div style="display:flex; align-items:center; gap:10px;">
+                      <strong style="color:var(--dark-pink); width:20px;">${idx + 1}</strong>
+                      <span style="font-weight:bold;">${data.nick}</span>
+                      <span style="font-size:12px; color:#888;">(${id})</span>
+                  </div>
+                  <strong style="color:var(--deep-pink-text); font-size:16px;">${data.sum.toLocaleString()}</strong>
+              `;
+              container.appendChild(div);
+          });
+      }
+      
+      document.getElementById('summary-modal').style.display = 'flex';
+  };
+
+  // 🔥 [신규] 기록실 역팬 합산 창 닫기
+  window.closeSummaryModal = () => {
+      document.getElementById('summary-modal').style.display = 'none';
+  };
+
   window.toggleAddForm = () => {
     window.isEditMode = false;
-    document.getElementById('add-form').style.display = 'block';
-    document.getElementById('new-date').value = window.selectedDateKey || '';
-    document.getElementById('new-nick').value = '';
-    document.getElementById('new-id').value = '';
-    document.getElementById('new-amount').value = '';
-    document.getElementById('new-reverse').value = '';
-    document.getElementById('new-content').value = '';
-    const btn = document.getElementById('btn-submit');
-    btn.innerText = "등록 완료 💖";
-    btn.classList.remove('edit-mode');
-  };
-
-  // 🔥 [복사 기능 추가]
-  window.cloneCalendarTask = () => {
-    const task = window.homeworkData[window.selectedDateKey][window.currentTaskIndex];
-    window.isEditMode = false; // 복제는 '새로운 등록' 취급
-    
-    document.getElementById('add-form').style.display = 'block';
-    document.getElementById('new-date').value = window.selectedDateKey; 
-    document.getElementById('new-nick').value = task.nick;
-    document.getElementById('new-id').value = task.id;
-    document.getElementById('new-amount').value = task.amount;
-    document.getElementById('new-reverse').value = task.reverse;
-    document.getElementById('new-content').value = task.content;
-    
-    const ratio = (task.amount > 0) ? (task.reverse / task.amount) : 0.03;
-    if(ratio >= 0.09) document.querySelector('input[name="calc-ratio"][value="0.10"]').checked = true;
-    else if(ratio >= 0.04) document.querySelector('input[name="calc-ratio"][value="0.05"]').checked = true;
-    else document.querySelector('input[name="calc-ratio"][value="0.03"]').checked = true;
-
-    const btn = document.getElementById('btn-submit');
-    btn.innerText = "복제본 등록 💖";
-    btn.classList.remove('edit-mode');
-    document.getElementById('detail-card').style.display = 'none';
-  };
-
-  window.openEditForm = () => {
-    window.isEditMode = true;
-    const task = window.homeworkData[window.selectedDateKey][window.currentTaskIndex];
-    document.getElementById('add-form').style.display = 'block';
-    document.getElementById('new-date').value = window.selectedDateKey;
-    document.getElementById('new-nick').value = task.nick;
-    document.getElementById('new-id').value = task.id;
-    document.getElementById('new-amount').value = task.amount;
-    document.getElementById('new-reverse').value = task.reverse;
-    document.getElementById('new-content').value = task.content;
-    
-    const ratio = (task.amount > 0) ? (task.reverse / task.amount) : 0.03;
-    if(ratio >= 0.09) document.querySelector('input[name="calc-ratio"][value="0.10"]').checked = true;
-    else if(ratio >= 0.04) document.querySelector('input[name="calc-ratio"][value="0.05"]').checked = true;
-    else document.querySelector('input[name="calc-ratio"][value="0.03"]').checked = true;
-
-    const btn = document.getElementById('btn-submit');
-    btn.innerText = "수정 완료 🔄";
-    btn.classList.add('edit-mode');
-    document.getElementById('detail-card').style.display = 'none';
-  };
-
-  window.autoCalculate = () => {
-    const amt = document.getElementById('new-amount').value;
-    const ratio = document.querySelector('input[name="calc-ratio"]:checked').value;
-    document.getElementById('new-reverse').value = Math.floor(amt * ratio);
-  };
-
-  window.handleTaskSubmit = () => {
-    const dKey = document.getElementById('new-date').value;
-    if(!dKey) return alert("날짜 필수");
-    const newTask = {
-        nick: document.getElementById('new-nick').value,
-        id: document.getElementById('new-id').value,
-        amount: document.getElementById('new-amount').value,
-        reverse: document.getElementById('new-reverse').value,
-        content: document.getElementById('new-content').value,
-        status: 'todo', memo: ''
-    };
-
-    if(window.isEditMode) {
-        const oldTask = window.homeworkData[window.selectedDateKey][window.currentTaskIndex];
-        newTask.status = oldTask.status;
-        newTask.memo = oldTask.memo;
-
-        if(dKey !== window.selectedDateKey) {
-            window.homeworkData[window.selectedDateKey].splice(window.currentTaskIndex, 1);
-            if(!window.homeworkData[dKey]) window.homeworkData[dKey] = [];
-            window.homeworkData[dKey].push(newTask);
-            alert("날짜 이동됨!");
-        } else {
-            window.homeworkData[dKey][window.currentTaskIndex] = newTask;
-        }
-    } else {
-        if(!window.homeworkData[dKey]) window.homeworkData[dKey] = [];
-        window.homeworkData[dKey].push(newTask);
-    }
-    
-    window.saveHomework();
-    document.getElementById('add-form').style.display = 'none';
-    if(dKey===window.selectedDateKey) window.selectDate(dKey);
-    else window.renderCalendar();
-  };
-
-  window.showMemberDetail = (task, idx) => {
-    window.currentTaskIndex = idx;
-    document.getElementById('detail-card').style.display = 'block';
-    document.getElementById('detail-nick').innerText = task.nick;
-    document.getElementById('detail-id').innerText = `@${task.id}`;
-    document.getElementById('detail-amount').innerText = parseInt(task.amount).toLocaleString();
-    document.getElementById('detail-reverse').innerText = parseInt(task.reverse).toLocaleString();
-    document.getElementById('detail-content').innerText = task.content;
-    document.getElementById('detail-memo').value = task.memo || '';
-    
-    const radios = document.getElementsByName('status');
-    let currentStatus = task.status || 'todo';
-    if(currentStatus === 'partial') currentStatus = 'bangsel';
-    for(let r of radios) { r.checked = (r.value === currentStatus); }
-    
-    document.getElementById('detail-link').href = `https://www.sooplive.co.kr/station/${task.id}`;
-    document.getElementById('detail-note-link').href = `https://m.sooplive.co.kr/#/note/write2/${task.id}`;
-  };
-
-  window.saveTaskStatus = (showMsg=false) => {
-    if(!window.selectedDateKey) return;
-    const task = window.homeworkData[window.selectedDateKey][window.currentTaskIndex];
-    task.memo = document.getElementById('detail-memo').value;
-    const radios = document.getElementsByName('status');
-    for(let r of radios) { if(r.checked) task.status = r.value; }
-    window.saveHomework();
-    if(showMsg) alert("저장됨!");
-    window.renderNickList(window.homeworkData[window.selectedDateKey]);
-  };
-
-  window.completeAndDelete = () => {
-    if(!confirm("완료 처리하시겠습니까? (삭제)")) return;
-    window.deleteTask();
-  };
-
-  window.deleteTask = () => {
-    window.homeworkData[window.selectedDateKey].splice(window.currentTaskIndex, 1);
-    window.saveHomework();
-    window.closeDetail();
-    window.selectDate(window.selectedDateKey);
-  };
-
-  window.closeDetail = () => {
-      document.getElementById('detail-card').style.display = 'none';
-      document.getElementById('add-form').style.display = 'none';
-  }
-
-</script>
-
-</body>
-</html>
